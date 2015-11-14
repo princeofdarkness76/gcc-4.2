@@ -1,0 +1,3 @@
+@set version-GCC 
+@clear DEVELOPMENT
+@set srcdir ./..

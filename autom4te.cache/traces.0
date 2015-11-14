@@ -1,0 +1,656 @@
+m4trace:config/acx.m4:14: -1- AC_DEFUN([_GCC_TOPLEV_NONCANONICAL_BUILD], [AC_REQUIRE([AC_CANONICAL_BUILD]) []dnl
+case ${build_alias} in
+  "") build_noncanonical=${build} ;;
+  *) build_noncanonical=${build_alias} ;;
+esac
+])
+m4trace:config/acx.m4:26: -1- AC_DEFUN([_GCC_TOPLEV_NONCANONICAL_HOST], [AC_REQUIRE([_GCC_TOPLEV_NONCANONICAL_BUILD]) []dnl
+case ${host_alias} in
+  "") host_noncanonical=${build_noncanonical} ;;
+  *) host_noncanonical=${host_alias} ;;
+esac
+])
+m4trace:config/acx.m4:38: -1- AC_DEFUN([_GCC_TOPLEV_NONCANONICAL_TARGET], [AC_REQUIRE([_GCC_TOPLEV_NONCANONICAL_HOST]) []dnl
+case ${target_alias} in
+  "") target_noncanonical=${host_noncanonical} ;;
+  *) target_noncanonical=${target_alias} ;;
+esac
+])
+m4trace:config/acx.m4:46: -1- AC_DEFUN([ACX_NONCANONICAL_BUILD], [AC_REQUIRE([_GCC_TOPLEV_NONCANONICAL_BUILD]) []dnl
+AC_SUBST(build_noncanonical)
+])
+m4trace:config/acx.m4:54: -1- AC_DEFUN([ACX_NONCANONICAL_HOST], [AC_REQUIRE([_GCC_TOPLEV_NONCANONICAL_HOST]) []dnl
+AC_SUBST(host_noncanonical)
+])
+m4trace:config/acx.m4:62: -1- AC_DEFUN([ACX_NONCANONICAL_TARGET], [AC_REQUIRE([_GCC_TOPLEV_NONCANONICAL_TARGET]) []dnl
+AC_SUBST(target_noncanonical)
+])
+m4trace:config/acx.m4:106: -1- AC_DEFUN([GCC_TOPLEV_SUBDIRS], [AC_REQUIRE([_GCC_TOPLEV_NONCANONICAL_TARGET]) []dnl
+AC_REQUIRE([_GCC_TOPLEV_NONCANONICAL_BUILD]) []dnl
+
+# post-stage1 host modules use a different CC_FOR_BUILD so, in order to
+# have matching libraries, they should use host libraries: Makefile.tpl
+# arranges to pass --with-build-libsubdir=$(HOST_SUBDIR).
+# However, they still use the build modules, because the corresponding
+# host modules (e.g. bison) are only built for the host when bootstrap
+# finishes. So:
+# - build_subdir is where we find build modules, and never changes.
+# - build_libsubdir is where we find build libraries, and can be overridden.
+
+# Prefix 'build-' so this never conflicts with target_subdir.
+build_subdir="build-${build_noncanonical}"
+AC_ARG_WITH(build-libsubdir,
+[  --with-build-libsubdir=[DIR]  Directory where to find libraries for build system],
+build_libsubdir="$withval",
+build_libsubdir="$build_subdir")
+# --srcdir=. covers the toplevel, while "test -d" covers the subdirectories
+if ( test $srcdir = . && test -d gcc ) \
+   || test -d $srcdir/../host-${host_noncanonical}; then
+  host_subdir="host-${host_noncanonical}"
+else
+  host_subdir=.
+fi
+# No prefix.
+target_subdir=${target_noncanonical}
+AC_SUBST([build_libsubdir]) []dnl
+AC_SUBST([build_subdir]) []dnl
+AC_SUBST([host_subdir]) []dnl
+AC_SUBST([target_subdir]) []dnl
+])
+m4trace:config/acx.m4:118: -1- AC_DEFUN([_NCN_TOOL_PREFIXES], [ncn_tool_prefix=
+test -n "$host_alias" && ncn_tool_prefix=$host_alias-
+ncn_target_tool_prefix=
+test -n "$target_alias" && ncn_target_tool_prefix=$target_alias-
+])
+m4trace:config/acx.m4:145: -1- AC_DEFUN([NCN_STRICT_CHECK_TOOLS], [AC_REQUIRE([_NCN_TOOL_PREFIXES]) []dnl
+for ncn_progname in $2; do
+  if test -n "$ncn_tool_prefix"; then
+    AC_CHECK_PROG([$1], [${ncn_tool_prefix}${ncn_progname}], 
+                  [${ncn_tool_prefix}${ncn_progname}], , [$4])
+  fi
+  if test -z "$ac_cv_prog_$1" && test $build = $host ; then
+    AC_CHECK_PROG([$1], [${ncn_progname}], [${ncn_progname}], , [$4]) 
+  fi
+  test -n "$ac_cv_prog_$1" && break
+done
+
+if test -z "$ac_cv_prog_$1" ; then
+  ifelse([$3],[], [set dummy $2
+  if test $build = $host ; then
+    $1="[$]2"
+  else
+    $1="${ncn_tool_prefix}[$]2"
+  fi], [$1="$3"])
+fi
+])
+m4trace:config/acx.m4:189: -1- AC_DEFUN([NCN_STRICT_CHECK_TARGET_TOOLS], [AC_REQUIRE([_NCN_TOOL_PREFIXES]) []dnl
+if test -n "$with_build_time_tools"; then
+  for ncn_progname in $2; do
+    AC_MSG_CHECKING([for ${ncn_progname} in $with_build_time_tools])
+    if test -x $with_build_time_tools/${ncn_progname}; then
+      ac_cv_prog_$1=$with_build_time_tools/${ncn_progname}
+      AC_MSG_RESULT(yes)
+      break
+    else
+      AC_MSG_RESULT(no)
+    fi
+  done
+fi
+
+if test -z "$ac_cv_prog_$1"; then
+  for ncn_progname in $2; do
+    if test -n "$ncn_target_tool_prefix"; then
+      AC_CHECK_PROG([$1], [${ncn_target_tool_prefix}${ncn_progname}], 
+                    [${ncn_target_tool_prefix}${ncn_progname}], , [$4])
+    fi
+    if test -z "$ac_cv_prog_$1" && test $build = $target ; then
+      AC_CHECK_PROG([$1], [${ncn_progname}], [${ncn_progname}], , [$4]) 
+    fi
+    test -n "$ac_cv_prog_$1" && break
+  done
+fi
+  
+if test -z "$ac_cv_prog_$1" ; then
+  ifelse([$3],[], [set dummy $2
+  if test $build = $target ; then
+    $1="[$]2"
+  else
+    $1="${ncn_target_tool_prefix}[$]2"
+  fi], [$1="$3"])
+else
+  $1="$ac_cv_prog_$1"
+fi
+])
+m4trace:config/acx.m4:207: -1- AC_DEFUN([ACX_PATH_SEP], [
+# The user is always right.
+if test "${PATH_SEPARATOR+set}" != set; then
+  echo "#! /bin/sh" >conf$$.sh
+  echo  "exit 0"   >>conf$$.sh
+  chmod +x conf$$.sh
+  if (PATH="/nonexistent;."; conf$$.sh) >/dev/null 2>&1; then
+    PATH_SEPARATOR=';'
+  else
+    PATH_SEPARATOR=: 
+  fi
+  rm -f conf$$.sh
+fi
+])
+m4trace:config/acx.m4:241: -1- AC_DEFUN([ACX_TOOL_DIRS], [
+AC_REQUIRE([ACX_PATH_SEP])
+if test "x$exec_prefix" = xNONE; then
+        if test "x$prefix" = xNONE; then
+                gcc_cv_tool_prefix=$ac_default_prefix
+        else
+                gcc_cv_tool_prefix=$prefix
+        fi
+else
+        gcc_cv_tool_prefix=$exec_prefix
+fi
+
+# If there is no compiler in the tree, use the PATH only.  In any
+# case, if there is no compiler in the tree nobody should use
+# AS_FOR_TARGET and LD_FOR_TARGET.
+if test x$host = x$build && test -f $srcdir/gcc/BASE-VER; then
+    gcc_version=`cat $srcdir/gcc/BASE-VER`
+    gcc_cv_tool_dirs="$gcc_cv_tool_prefix/libexec/gcc/$target_noncanonical/$gcc_version$PATH_SEPARATOR"
+    gcc_cv_tool_dirs="$gcc_cv_tool_dirs$gcc_cv_tool_prefix/libexec/gcc/$target_noncanonical$PATH_SEPARATOR"
+    gcc_cv_tool_dirs="$gcc_cv_tool_dirs/usr/lib/gcc/$target_noncanonical/$gcc_version$PATH_SEPARATOR"
+    gcc_cv_tool_dirs="$gcc_cv_tool_dirs/usr/lib/gcc/$target_noncanonical$PATH_SEPARATOR"
+    gcc_cv_tool_dirs="$gcc_cv_tool_dirs$gcc_cv_tool_prefix/$target_noncanonical/bin/$target_noncanonical/$gcc_version$PATH_SEPARATOR"
+    gcc_cv_tool_dirs="$gcc_cv_tool_dirs$gcc_cv_tool_prefix/$target_noncanonical/bin$PATH_SEPARATOR"
+else
+    gcc_cv_tool_dirs=
+fi
+
+if test x$build = x$target && test -n "$md_exec_prefix"; then
+        gcc_cv_tool_dirs="$gcc_cv_tool_dirs$md_exec_prefix$PATH_SEPARATOR"
+fi
+
+])
+m4trace:config/acx.m4:258: -1- AC_DEFUN([ACX_HAVE_GCC_FOR_TARGET], [
+cat > conftest.c << \EOF
+#ifdef __GNUC__
+  gcc_yay;
+#endif
+EOF
+if ($GCC_FOR_TARGET -E conftest.c | grep gcc_yay) > /dev/null 2>&1; then
+  have_gcc_for_target=yes
+else
+  GCC_FOR_TARGET=${ncn_target_tool_prefix}gcc
+  have_gcc_for_target=no
+fi
+rm conftest.c
+])
+m4trace:config/acx.m4:313: -1- AC_DEFUN([ACX_CHECK_INSTALLED_TARGET_TOOL], [
+AC_REQUIRE([ACX_TOOL_DIRS])
+AC_REQUIRE([ACX_HAVE_GCC_FOR_TARGET])
+if test -z "$ac_cv_path_$1" ; then
+  if test -n "$with_build_time_tools"; then
+    AC_MSG_CHECKING([for $2 in $with_build_time_tools])
+    if test -x $with_build_time_tools/$2; then
+      $1=`cd $with_build_time_tools && pwd`/$2
+      ac_cv_path_$1=[$]$1
+      AC_MSG_RESULT([$ac_cv_path_$1])
+    else
+      AC_MSG_RESULT(no)
+    fi
+  elif test $build != $host && test $have_gcc_for_target = yes; then
+    $1=`$GCC_FOR_TARGET --print-prog-name=$2`
+    test [$]$1=$2 && $1=
+    test -n "[$]$1" && ac_cv_path_$1=[$]$1
+  fi
+fi
+if test -z "$ac_cv_path_$1" ; then
+  AC_PATH_PROG([$1], [$2], [], [$gcc_cv_tool_dirs])
+fi
+if test -z "$ac_cv_path_$1" ; then
+  NCN_STRICT_CHECK_TARGET_TOOLS([$1], [$2])
+else
+  $1=$ac_cv_path_$1
+fi
+])
+m4trace:config/acx.m4:328: -1- AC_DEFUN([AC_PROG_CPP_WERROR], [AC_REQUIRE([AC_PROG_CPP])dnl
+m4_define([AC_CHECK_HEADER],m4_defn([_AC_CHECK_HEADER_OLD]))
+ac_c_preproc_warn_flag=yes])
+m4trace:config/acx.m4:365: -1- AC_DEFUN([ACX_PROG_GNAT], [AC_REQUIRE([AC_CHECK_TOOL_PREFIX])
+AC_REQUIRE([AC_PROG_CC])
+AC_CHECK_TOOL(GNATBIND, gnatbind, no)
+AC_CACHE_CHECK([whether compiler driver understands Ada],
+		 acx_cv_cc_gcc_supports_ada,
+[cat >conftest.adb <<EOF
+procedure conftest is begin null; end conftest;
+EOF
+acx_cv_cc_gcc_supports_ada=no
+# There is a bug in old released versions of GCC which causes the
+# driver to exit successfully when the appropriate language module
+# has not been installed.  This is fixed in 2.95.4, 3.0.2, and 3.1.
+# Therefore we must check for the error message as well as an
+# unsuccessful exit.
+# Other compilers, like HP Tru64 UNIX cc, exit successfully when
+# given a .adb file, but produce no object file.  So we must check
+# if an object file was really produced to guard against this.
+errors=`(${CC} -c conftest.adb) 2>&1 || echo failure`
+if test x"$errors" = x && test -f conftest.$ac_objext; then
+  acx_cv_cc_gcc_supports_ada=yes
+fi
+rm -f conftest.*])
+
+if test x$GNATBIND != xno && test x$acx_cv_cc_gcc_supports_ada != xno; then
+  have_gnat=yes
+else
+  have_gnat=no
+fi
+])
+m4trace:config/acx.m4:396: -1- AC_DEFUN([ACX_PROG_CMP_IGNORE_INITIAL], [AC_CACHE_CHECK([how to compare bootstrapped objects], gcc_cv_prog_cmp_skip,
+[ echo abfoo >t1
+  echo cdfoo >t2
+  gcc_cv_prog_cmp_skip='tail +16c $$f1 > tmp-foo1; tail +16c $$f2 > tmp-foo2; cmp tmp-foo1 tmp-foo2'
+  if cmp t1 t2 2 2 > /dev/null 2>&1; then
+    if cmp t1 t2 1 1 > /dev/null 2>&1; then
+      :
+    else
+      gcc_cv_prog_cmp_skip='cmp $$f1 $$f2 16 16'
+    fi
+  fi
+  if cmp --ignore-initial=2 t1 t2 > /dev/null 2>&1; then
+    if cmp --ignore-initial=1 t1 t2 > /dev/null 2>&1; then
+      :
+    else
+      gcc_cv_prog_cmp_skip='cmp --ignore-initial=16 $$f1 $$f2'
+    fi
+  fi
+  rm t1 t2
+])
+do_compare="$gcc_cv_prog_cmp_skip"
+AC_SUBST(do_compare)
+])
+m4trace:config/acx.m4:407: -1- AC_DEFUN([ACX_HEADER_STRING], [AC_CACHE_CHECK([whether string.h and strings.h may both be included],
+  gcc_cv_header_string,
+[AC_TRY_COMPILE([#include <string.h>
+#include <strings.h>], , gcc_cv_header_string=yes, gcc_cv_header_string=no)])
+if test $gcc_cv_header_string = yes; then
+  AC_DEFINE(STRING_WITH_STRINGS, 1, [Define if you can safely include both <string.h> and <strings.h>.])
+fi
+])
+m4trace:config/acx.m4:429: -1- AC_DEFUN([ACX_HEADER_STDBOOL], [AC_CACHE_CHECK([for working stdbool.h],
+  ac_cv_header_stdbool_h,
+[AC_TRY_COMPILE([#include <stdbool.h>],
+[bool foo = false;],
+ac_cv_header_stdbool_h=yes, ac_cv_header_stdbool_h=no)])
+if test $ac_cv_header_stdbool_h = yes; then
+  AC_DEFINE(HAVE_STDBOOL_H, 1,
+  [Define if you have a working <stdbool.h> header file.])
+fi
+AC_CACHE_CHECK(for built-in _Bool, gcc_cv_c__bool,
+[AC_TRY_COMPILE(,
+[_Bool foo;],
+gcc_cv_c__bool=yes, gcc_cv_c__bool=no)
+])
+if test $gcc_cv_c__bool = yes; then
+  AC_DEFINE(HAVE__BOOL, 1, [Define if the \`_Bool' type is built-in.])
+fi
+])
+m4trace:config/acx.m4:453: -1- AC_DEFUN([ACX_PROG_LN], [AC_MSG_CHECKING(whether ln works)
+AC_CACHE_VAL(acx_cv_prog_LN,
+[rm -f conftestdata_t
+echo >conftestdata_f
+if ln conftestdata_f conftestdata_t 2>/dev/null
+then
+  acx_cv_prog_LN=ln
+else
+  acx_cv_prog_LN=no
+fi
+rm -f conftestdata_f conftestdata_t
+])dnl
+if test $acx_cv_prog_LN = no; then
+  LN="ifelse([$1],,cp,[$1])"
+  AC_MSG_RESULT([no, using $LN])
+else
+  LN="$acx_cv_prog_LN"
+  AC_MSG_RESULT(yes)
+fi
+AC_SUBST(LN)dnl
+])
+m4trace:config/acx.m4:493: -1- AC_DEFUN([GCC_TARGET_TOOL], [AC_MSG_CHECKING(where to find the target $1)
+if test "x${build}" != "x${host}" ; then
+  if expr "x[$]$2" : "x/" > /dev/null; then
+    # We already found the complete path
+    AC_MSG_RESULT(pre-installed in `dirname [$]$2`)
+  else
+    # Canadian cross, just use what we found
+    AC_MSG_RESULT(pre-installed)
+  fi
+else
+  ifelse([$4],,,
+  [ok=yes
+  case " ${configdirs} " in
+    *" patsubst([$4], [/.*], []) "*) ;;
+    *) ok=no ;;
+  esac
+  ifelse([$5],,, 
+  [case ,${enable_languages}, in
+    *,$5,*) ;;
+    *) ok=no ;;
+  esac])
+  if test $ok = yes; then
+    # An in-tree tool is available and we can use it
+    $2='$$r/$(HOST_SUBDIR)/$4'
+    AC_MSG_RESULT(just compiled)
+  el])if expr "x[$]$2" : "x/" > /dev/null; then
+    # We already found the complete path
+    AC_MSG_RESULT(pre-installed in `dirname [$]$2`)
+  elif test "x$target" = "x$host"; then
+    # We can use an host tool
+    $2='$($3)'
+    AC_MSG_RESULT(host tool)
+  else
+    # We need a cross tool
+    AC_MSG_RESULT(pre-installed)
+  fi
+fi])
+m4trace:config/acx.m4:519: -1- AC_DEFUN([ACX_CHECK_PROG_VER], [
+  AC_CHECK_PROG([$1], [$2], [$2])
+  if test -n "[$]$1"; then
+    # Found it, now check the version.
+    AC_CACHE_CHECK([for modern $2],
+                   [gcc_cv_prog_$2_modern],
+                   [ac_prog_version=`eval [$]$1 $3 2>&1 |
+                                     sed -n 's/^.*patsubst([[$4]],/,\/).*$/\1/p'`
+
+                    [case $ac_prog_version in
+                       '')  gcc_cv_prog_$2_modern=no;;
+                       $5)  gcc_cv_prog_$2_modern=yes;;
+                       *)   gcc_cv_prog_$2_modern=no;;
+                     esac]
+                                                                                                                                                                               if test $gcc_cv_prog_$2_modern = no; then
+                      $1="${CONFIG_SHELL-/bin/sh} $ac_aux_dir/missing $2"
+                    fi
+                   ])
+  else
+    gcc_cv_prog_$2_modern=no
+  fi
+])
+m4trace:configure.in:23: -1- m4_pattern_forbid([^_?A[CHUM]_])
+m4trace:configure.in:23: -1- m4_pattern_forbid([_AC_])
+m4trace:configure.in:23: -1- m4_pattern_forbid([^LIBOBJS$], [do not use LIBOBJS directly, use AC_LIBOBJ (see section `AC_LIBOBJ vs LIBOBJS'])
+m4trace:configure.in:23: -1- m4_pattern_allow([^AS_FLAGS$])
+m4trace:configure.in:23: -1- m4_pattern_forbid([^_?m4_])
+m4trace:configure.in:23: -1- m4_pattern_forbid([^dnl$])
+m4trace:configure.in:23: -1- m4_pattern_forbid([^_?AS_])
+m4trace:configure.in:23: -1- m4_pattern_allow([^SHELL$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^PATH_SEPARATOR$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^PACKAGE_NAME$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^PACKAGE_TARNAME$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^PACKAGE_VERSION$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^PACKAGE_STRING$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^PACKAGE_BUGREPORT$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^PACKAGE_URL$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^exec_prefix$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^prefix$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^program_transform_name$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^bindir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^sbindir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^libexecdir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^datarootdir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^datadir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^sysconfdir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^sharedstatedir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^localstatedir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^includedir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^oldincludedir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^docdir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^infodir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^htmldir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^dvidir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^pdfdir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^psdir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^libdir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^localedir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^mandir$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^PACKAGE_NAME$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^PACKAGE_TARNAME$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^PACKAGE_VERSION$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^PACKAGE_STRING$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^PACKAGE_BUGREPORT$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^PACKAGE_URL$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^DEFS$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^ECHO_C$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^ECHO_N$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^ECHO_T$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^build_alias$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^host_alias$])
+m4trace:configure.in:23: -1- m4_pattern_allow([^target_alias$])
+m4trace:configure.in:25: -1- _m4_warn([obsolete], [The macro `AC_CANONICAL_SYSTEM' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:1857: AC_CANONICAL_SYSTEM is expanded from...
+configure.in:25: the top level])
+m4trace:configure.in:25: -1- m4_pattern_allow([^build$])
+m4trace:configure.in:25: -1- m4_pattern_allow([^build_cpu$])
+m4trace:configure.in:25: -1- m4_pattern_allow([^build_vendor$])
+m4trace:configure.in:25: -1- m4_pattern_allow([^build_os$])
+m4trace:configure.in:25: -1- m4_pattern_allow([^host$])
+m4trace:configure.in:25: -1- m4_pattern_allow([^host_cpu$])
+m4trace:configure.in:25: -1- m4_pattern_allow([^host_vendor$])
+m4trace:configure.in:25: -1- m4_pattern_allow([^host_os$])
+m4trace:configure.in:25: -1- m4_pattern_allow([^target$])
+m4trace:configure.in:25: -1- m4_pattern_allow([^target_cpu$])
+m4trace:configure.in:25: -1- m4_pattern_allow([^target_vendor$])
+m4trace:configure.in:25: -1- m4_pattern_allow([^target_os$])
+m4trace:configure.in:29: -1- m4_pattern_allow([^INSTALL_PROGRAM$])
+m4trace:configure.in:29: -1- m4_pattern_allow([^INSTALL_SCRIPT$])
+m4trace:configure.in:29: -1- m4_pattern_allow([^INSTALL_DATA$])
+m4trace:configure.in:30: -1- ACX_PROG_LN
+m4trace:configure.in:30: -1- m4_pattern_allow([^LN$])
+m4trace:configure.in:31: -1- m4_pattern_allow([^LN_S$])
+m4trace:configure.in:79: -1- m4_pattern_allow([^TOPLEVEL_CONFIGURE_ARGUMENTS$])
+m4trace:configure.in:193: -1- GCC_TOPLEV_SUBDIRS
+m4trace:configure.in:193: -1- _GCC_TOPLEV_NONCANONICAL_TARGET
+m4trace:configure.in:193: -1- _GCC_TOPLEV_NONCANONICAL_HOST
+m4trace:configure.in:193: -1- _GCC_TOPLEV_NONCANONICAL_BUILD
+m4trace:configure.in:193: -1- m4_pattern_allow([^build_libsubdir$])
+m4trace:configure.in:193: -1- m4_pattern_allow([^build_subdir$])
+m4trace:configure.in:193: -1- m4_pattern_allow([^host_subdir$])
+m4trace:configure.in:193: -1- m4_pattern_allow([^target_subdir$])
+m4trace:configure.in:1022: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:1022: -1- m4_pattern_allow([^CFLAGS$])
+m4trace:configure.in:1022: -1- m4_pattern_allow([^LDFLAGS$])
+m4trace:configure.in:1022: -1- m4_pattern_allow([^LIBS$])
+m4trace:configure.in:1022: -1- m4_pattern_allow([^CPPFLAGS$])
+m4trace:configure.in:1022: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:1022: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:1022: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:1022: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:1022: -1- m4_pattern_allow([^ac_ct_CC$])
+m4trace:configure.in:1022: -1- m4_pattern_allow([^EXEEXT$])
+m4trace:configure.in:1022: -1- m4_pattern_allow([^OBJEXT$])
+m4trace:configure.in:1048: -1- ACX_PROG_GNAT
+m4trace:configure.in:1048: -1- _m4_warn([obsolete], [The macro `AC_CHECK_TOOL_PREFIX' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/programs.m4:183: AC_CHECK_TOOL_PREFIX is expanded from...
+config/acx.m4:365: ACX_PROG_GNAT is expanded from...
+configure.in:1048: the top level])
+m4trace:configure.in:1048: -1- m4_pattern_allow([^GNATBIND$])
+m4trace:configure.in:1049: -1- ACX_PROG_CMP_IGNORE_INITIAL
+m4trace:configure.in:1049: -1- m4_pattern_allow([^do_compare$])
+m4trace:configure.in:1112: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2615: AC_TRY_COMPILE is expanded from...
+configure.in:1112: the top level])
+m4trace:configure.in:1121: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2615: AC_TRY_COMPILE is expanded from...
+configure.in:1121: the top level])
+m4trace:configure.in:1128: -1- _m4_warn([obsolete], [The macro `AC_TRY_LINK' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2688: AC_TRY_LINK is expanded from...
+configure.in:1128: the top level])
+m4trace:configure.in:1134: -1- m4_pattern_allow([^gmplibs$])
+m4trace:configure.in:1135: -1- m4_pattern_allow([^gmpinc$])
+m4trace:configure.in:1139: -1- m4_pattern_allow([^stage1_languages$])
+m4trace:configure.in:1484: -1- m4_pattern_allow([^SYSROOT_CFLAGS_FOR_TARGET$])
+m4trace:configure.in:1976: -1- m4_pattern_allow([^serialization_dependencies$])
+m4trace:configure.in:2180: -1- m4_pattern_allow([^host_makefile_frag$])
+m4trace:configure.in:2181: -1- m4_pattern_allow([^target_makefile_frag$])
+m4trace:configure.in:2182: -1- m4_pattern_allow([^alphaieee_frag$])
+m4trace:configure.in:2183: -1- m4_pattern_allow([^ospace_frag$])
+m4trace:configure.in:2186: -1- m4_pattern_allow([^RPATH_ENVVAR$])
+m4trace:configure.in:2187: -1- m4_pattern_allow([^tooldir$])
+m4trace:configure.in:2188: -1- m4_pattern_allow([^build_tooldir$])
+m4trace:configure.in:2189: -1- m4_pattern_allow([^CONFIGURE_GDB_TK$])
+m4trace:configure.in:2190: -1- m4_pattern_allow([^GDB_TK$])
+m4trace:configure.in:2191: -1- m4_pattern_allow([^INSTALL_GDB_TK$])
+m4trace:configure.in:2194: -1- m4_pattern_allow([^build_configargs$])
+m4trace:configure.in:2195: -1- m4_pattern_allow([^build_configdirs$])
+m4trace:configure.in:2198: -1- m4_pattern_allow([^host_configargs$])
+m4trace:configure.in:2199: -1- m4_pattern_allow([^configdirs$])
+m4trace:configure.in:2202: -1- m4_pattern_allow([^target_configargs$])
+m4trace:configure.in:2206: -1- m4_pattern_allow([^CC_FOR_BUILD$])
+m4trace:configure.in:2207: -1- m4_pattern_allow([^config_shell$])
+m4trace:configure.in:2214: -1- m4_pattern_allow([^YACC$])
+m4trace:configure.in:2220: -1- m4_pattern_allow([^BISON$])
+m4trace:configure.in:2225: -1- m4_pattern_allow([^M4$])
+m4trace:configure.in:2230: -1- m4_pattern_allow([^LEX$])
+m4trace:configure.in:2236: -1- m4_pattern_allow([^FLEX$])
+m4trace:configure.in:2241: -1- m4_pattern_allow([^MAKEINFO$])
+m4trace:configure.in:2260: -1- m4_pattern_allow([^EXPECT$])
+m4trace:configure.in:2267: -1- m4_pattern_allow([^RUNTEST$])
+m4trace:configure.in:2276: -1- NCN_STRICT_CHECK_TOOLS([AR], [ar])
+m4trace:configure.in:2276: -1- _NCN_TOOL_PREFIXES
+m4trace:configure.in:2276: -1- m4_pattern_allow([^AR$])
+m4trace:configure.in:2276: -1- m4_pattern_allow([^AR$])
+m4trace:configure.in:2277: -1- NCN_STRICT_CHECK_TOOLS([AS], [as])
+m4trace:configure.in:2277: -1- m4_pattern_allow([^AS$])
+m4trace:configure.in:2277: -1- m4_pattern_allow([^AS$])
+m4trace:configure.in:2278: -1- NCN_STRICT_CHECK_TOOLS([DLLTOOL], [dlltool])
+m4trace:configure.in:2278: -1- m4_pattern_allow([^DLLTOOL$])
+m4trace:configure.in:2278: -1- m4_pattern_allow([^DLLTOOL$])
+m4trace:configure.in:2279: -1- NCN_STRICT_CHECK_TOOLS([LD], [ld])
+m4trace:configure.in:2279: -1- m4_pattern_allow([^LD$])
+m4trace:configure.in:2279: -1- m4_pattern_allow([^LD$])
+m4trace:configure.in:2280: -1- NCN_STRICT_CHECK_TOOLS([LIPO], [lipo])
+m4trace:configure.in:2280: -1- m4_pattern_allow([^LIPO$])
+m4trace:configure.in:2280: -1- m4_pattern_allow([^LIPO$])
+m4trace:configure.in:2281: -1- NCN_STRICT_CHECK_TOOLS([NM], [nm])
+m4trace:configure.in:2281: -1- m4_pattern_allow([^NM$])
+m4trace:configure.in:2281: -1- m4_pattern_allow([^NM$])
+m4trace:configure.in:2282: -1- NCN_STRICT_CHECK_TOOLS([RANLIB], [ranlib], [:])
+m4trace:configure.in:2282: -1- m4_pattern_allow([^RANLIB$])
+m4trace:configure.in:2282: -1- m4_pattern_allow([^RANLIB$])
+m4trace:configure.in:2283: -1- NCN_STRICT_CHECK_TOOLS([STRIP], [strip], [:])
+m4trace:configure.in:2283: -1- m4_pattern_allow([^STRIP$])
+m4trace:configure.in:2283: -1- m4_pattern_allow([^STRIP$])
+m4trace:configure.in:2284: -1- NCN_STRICT_CHECK_TOOLS([WINDRES], [windres])
+m4trace:configure.in:2284: -1- m4_pattern_allow([^WINDRES$])
+m4trace:configure.in:2284: -1- m4_pattern_allow([^WINDRES$])
+m4trace:configure.in:2285: -1- NCN_STRICT_CHECK_TOOLS([OBJCOPY], [objcopy])
+m4trace:configure.in:2285: -1- m4_pattern_allow([^OBJCOPY$])
+m4trace:configure.in:2285: -1- m4_pattern_allow([^OBJCOPY$])
+m4trace:configure.in:2286: -1- NCN_STRICT_CHECK_TOOLS([OBJDUMP], [objdump])
+m4trace:configure.in:2286: -1- m4_pattern_allow([^OBJDUMP$])
+m4trace:configure.in:2286: -1- m4_pattern_allow([^OBJDUMP$])
+m4trace:configure.in:2287: -1- m4_pattern_allow([^CC$])
+m4trace:configure.in:2288: -1- m4_pattern_allow([^CXX$])
+m4trace:configure.in:2289: -1- m4_pattern_allow([^CFLAGS$])
+m4trace:configure.in:2290: -1- m4_pattern_allow([^CFLAGS_FOR_BUILD$])
+m4trace:configure.in:2291: -1- m4_pattern_allow([^CXXFLAGS$])
+m4trace:configure.in:2306: -1- NCN_STRICT_CHECK_TARGET_TOOLS([CC_FOR_TARGET], [cc gcc])
+m4trace:configure.in:2306: -1- m4_pattern_allow([^CC_FOR_TARGET$])
+m4trace:configure.in:2306: -1- m4_pattern_allow([^CC_FOR_TARGET$])
+m4trace:configure.in:2307: -1- NCN_STRICT_CHECK_TARGET_TOOLS([CXX_FOR_TARGET], [c++ g++ cxx gxx])
+m4trace:configure.in:2307: -1- m4_pattern_allow([^CXX_FOR_TARGET$])
+m4trace:configure.in:2307: -1- m4_pattern_allow([^CXX_FOR_TARGET$])
+m4trace:configure.in:2308: -1- NCN_STRICT_CHECK_TARGET_TOOLS([GCC_FOR_TARGET], [gcc], [${CC_FOR_TARGET}])
+m4trace:configure.in:2308: -1- m4_pattern_allow([^GCC_FOR_TARGET$])
+m4trace:configure.in:2308: -1- m4_pattern_allow([^GCC_FOR_TARGET$])
+m4trace:configure.in:2309: -1- NCN_STRICT_CHECK_TARGET_TOOLS([GCJ_FOR_TARGET], [gcj])
+m4trace:configure.in:2309: -1- m4_pattern_allow([^GCJ_FOR_TARGET$])
+m4trace:configure.in:2309: -1- m4_pattern_allow([^GCJ_FOR_TARGET$])
+m4trace:configure.in:2310: -1- NCN_STRICT_CHECK_TARGET_TOOLS([GFORTRAN_FOR_TARGET], [gfortran])
+m4trace:configure.in:2310: -1- m4_pattern_allow([^GFORTRAN_FOR_TARGET$])
+m4trace:configure.in:2310: -1- m4_pattern_allow([^GFORTRAN_FOR_TARGET$])
+m4trace:configure.in:2312: -1- ACX_CHECK_INSTALLED_TARGET_TOOL([AR_FOR_TARGET], [ar])
+m4trace:configure.in:2312: -1- ACX_TOOL_DIRS
+m4trace:configure.in:2312: -1- ACX_PATH_SEP
+m4trace:configure.in:2312: -1- ACX_HAVE_GCC_FOR_TARGET
+m4trace:configure.in:2312: -1- m4_pattern_allow([^AR_FOR_TARGET$])
+m4trace:configure.in:2312: -1- NCN_STRICT_CHECK_TARGET_TOOLS([AR_FOR_TARGET], [ar])
+m4trace:configure.in:2312: -1- m4_pattern_allow([^AR_FOR_TARGET$])
+m4trace:configure.in:2312: -1- m4_pattern_allow([^AR_FOR_TARGET$])
+m4trace:configure.in:2313: -1- ACX_CHECK_INSTALLED_TARGET_TOOL([AS_FOR_TARGET], [as])
+m4trace:configure.in:2313: -1- m4_pattern_allow([^AS_FOR_TARGET$])
+m4trace:configure.in:2313: -1- NCN_STRICT_CHECK_TARGET_TOOLS([AS_FOR_TARGET], [as])
+m4trace:configure.in:2313: -1- m4_pattern_allow([^AS_FOR_TARGET$])
+m4trace:configure.in:2313: -1- m4_pattern_allow([^AS_FOR_TARGET$])
+m4trace:configure.in:2314: -1- ACX_CHECK_INSTALLED_TARGET_TOOL([DLLTOOL_FOR_TARGET], [dlltool])
+m4trace:configure.in:2314: -1- m4_pattern_allow([^DLLTOOL_FOR_TARGET$])
+m4trace:configure.in:2314: -1- NCN_STRICT_CHECK_TARGET_TOOLS([DLLTOOL_FOR_TARGET], [dlltool])
+m4trace:configure.in:2314: -1- m4_pattern_allow([^DLLTOOL_FOR_TARGET$])
+m4trace:configure.in:2314: -1- m4_pattern_allow([^DLLTOOL_FOR_TARGET$])
+m4trace:configure.in:2315: -1- ACX_CHECK_INSTALLED_TARGET_TOOL([LD_FOR_TARGET], [ld])
+m4trace:configure.in:2315: -1- m4_pattern_allow([^LD_FOR_TARGET$])
+m4trace:configure.in:2315: -1- NCN_STRICT_CHECK_TARGET_TOOLS([LD_FOR_TARGET], [ld])
+m4trace:configure.in:2315: -1- m4_pattern_allow([^LD_FOR_TARGET$])
+m4trace:configure.in:2315: -1- m4_pattern_allow([^LD_FOR_TARGET$])
+m4trace:configure.in:2316: -1- ACX_CHECK_INSTALLED_TARGET_TOOL([LIPO_FOR_TARGET], [lipo])
+m4trace:configure.in:2316: -1- m4_pattern_allow([^LIPO_FOR_TARGET$])
+m4trace:configure.in:2316: -1- NCN_STRICT_CHECK_TARGET_TOOLS([LIPO_FOR_TARGET], [lipo])
+m4trace:configure.in:2316: -1- m4_pattern_allow([^LIPO_FOR_TARGET$])
+m4trace:configure.in:2316: -1- m4_pattern_allow([^LIPO_FOR_TARGET$])
+m4trace:configure.in:2317: -1- ACX_CHECK_INSTALLED_TARGET_TOOL([NM_FOR_TARGET], [nm])
+m4trace:configure.in:2317: -1- m4_pattern_allow([^NM_FOR_TARGET$])
+m4trace:configure.in:2317: -1- NCN_STRICT_CHECK_TARGET_TOOLS([NM_FOR_TARGET], [nm])
+m4trace:configure.in:2317: -1- m4_pattern_allow([^NM_FOR_TARGET$])
+m4trace:configure.in:2317: -1- m4_pattern_allow([^NM_FOR_TARGET$])
+m4trace:configure.in:2318: -1- ACX_CHECK_INSTALLED_TARGET_TOOL([OBJDUMP_FOR_TARGET], [objdump])
+m4trace:configure.in:2318: -1- m4_pattern_allow([^OBJDUMP_FOR_TARGET$])
+m4trace:configure.in:2318: -1- NCN_STRICT_CHECK_TARGET_TOOLS([OBJDUMP_FOR_TARGET], [objdump])
+m4trace:configure.in:2318: -1- m4_pattern_allow([^OBJDUMP_FOR_TARGET$])
+m4trace:configure.in:2318: -1- m4_pattern_allow([^OBJDUMP_FOR_TARGET$])
+m4trace:configure.in:2319: -1- ACX_CHECK_INSTALLED_TARGET_TOOL([RANLIB_FOR_TARGET], [ranlib], [:])
+m4trace:configure.in:2319: -1- m4_pattern_allow([^RANLIB_FOR_TARGET$])
+m4trace:configure.in:2319: -1- NCN_STRICT_CHECK_TARGET_TOOLS([RANLIB_FOR_TARGET], [ranlib])
+m4trace:configure.in:2319: -1- m4_pattern_allow([^RANLIB_FOR_TARGET$])
+m4trace:configure.in:2319: -1- m4_pattern_allow([^RANLIB_FOR_TARGET$])
+m4trace:configure.in:2320: -1- ACX_CHECK_INSTALLED_TARGET_TOOL([STRIP_FOR_TARGET], [strip])
+m4trace:configure.in:2320: -1- m4_pattern_allow([^STRIP_FOR_TARGET$])
+m4trace:configure.in:2320: -1- NCN_STRICT_CHECK_TARGET_TOOLS([STRIP_FOR_TARGET], [strip])
+m4trace:configure.in:2320: -1- m4_pattern_allow([^STRIP_FOR_TARGET$])
+m4trace:configure.in:2320: -1- m4_pattern_allow([^STRIP_FOR_TARGET$])
+m4trace:configure.in:2321: -1- ACX_CHECK_INSTALLED_TARGET_TOOL([WINDRES_FOR_TARGET], [windres])
+m4trace:configure.in:2321: -1- m4_pattern_allow([^WINDRES_FOR_TARGET$])
+m4trace:configure.in:2321: -1- NCN_STRICT_CHECK_TARGET_TOOLS([WINDRES_FOR_TARGET], [windres])
+m4trace:configure.in:2321: -1- m4_pattern_allow([^WINDRES_FOR_TARGET$])
+m4trace:configure.in:2321: -1- m4_pattern_allow([^WINDRES_FOR_TARGET$])
+m4trace:configure.in:2325: -1- GCC_TARGET_TOOL([ar], [AR_FOR_TARGET], [AR], [binutils/ar])
+m4trace:configure.in:2326: -1- GCC_TARGET_TOOL([as], [AS_FOR_TARGET], [AS], [gas/as-new])
+m4trace:configure.in:2327: -1- GCC_TARGET_TOOL([cc], [CC_FOR_TARGET], [CC], [gcc/xgcc -B$$r/$(HOST_SUBDIR)/gcc/])
+m4trace:configure.in:2330: -1- GCC_TARGET_TOOL([c++], [CXX_FOR_TARGET], [CXX], [gcc/g++ -B$$r/$(HOST_SUBDIR)/gcc/ -nostdinc++ `test ! -f $$r/$(TARGET_SUBDIR)/libstdc++-v3/scripts/testsuite_flags || $(SHELL) $$r/$(TARGET_SUBDIR)/libstdc++-v3/scripts/testsuite_flags --build-includes` -L$$r/$(TARGET_SUBDIR)/libstdc++-v3/src -L$$r/$(TARGET_SUBDIR)/libstdc++-v3/src/.libs], [c++])
+m4trace:configure.in:2333: -1- GCC_TARGET_TOOL([c++ for libstdc++], [RAW_CXX_FOR_TARGET], [CXX], [gcc/xgcc -shared-libgcc -B$$r/$(HOST_SUBDIR)/gcc -nostdinc++ -L$$r/$(TARGET_SUBDIR)/libstdc++-v3/src -L$$r/$(TARGET_SUBDIR)/libstdc++-v3/src/.libs], [c++])
+m4trace:configure.in:2334: -1- GCC_TARGET_TOOL([dlltool], [DLLTOOL_FOR_TARGET], [DLLTOOL], [binutils/dlltool])
+m4trace:configure.in:2335: -1- GCC_TARGET_TOOL([gcc], [GCC_FOR_TARGET], [], [gcc/xgcc -B$$r/$(HOST_SUBDIR)/gcc/])
+m4trace:configure.in:2337: -1- GCC_TARGET_TOOL([gcj], [GCJ_FOR_TARGET], [GCJ], [gcc/gcj -B$$r/$(HOST_SUBDIR)/gcc/], [java])
+m4trace:configure.in:2339: -1- GCC_TARGET_TOOL([gfortran], [GFORTRAN_FOR_TARGET], [GFORTRAN], [gcc/gfortran -B$$r/$(HOST_SUBDIR)/gcc/], [fortran])
+m4trace:configure.in:2340: -1- GCC_TARGET_TOOL([ld], [LD_FOR_TARGET], [LD], [ld/ld-new])
+m4trace:configure.in:2341: -1- GCC_TARGET_TOOL([lipo], [LIPO_FOR_TARGET], [LIPO])
+m4trace:configure.in:2342: -1- GCC_TARGET_TOOL([nm], [NM_FOR_TARGET], [NM], [binutils/nm-new])
+m4trace:configure.in:2343: -1- GCC_TARGET_TOOL([objdump], [OBJDUMP_FOR_TARGET], [OBJDUMP], [binutils/objdump])
+m4trace:configure.in:2344: -1- GCC_TARGET_TOOL([ranlib], [RANLIB_FOR_TARGET], [RANLIB], [binutils/ranlib])
+m4trace:configure.in:2345: -1- GCC_TARGET_TOOL([strip], [STRIP_FOR_TARGET], [STRIP], [binutils/strip])
+m4trace:configure.in:2346: -1- GCC_TARGET_TOOL([windres], [WINDRES_FOR_TARGET], [WINDRES], [binutils/windres])
+m4trace:configure.in:2348: -1- m4_pattern_allow([^FLAGS_FOR_TARGET$])
+m4trace:configure.in:2349: -1- m4_pattern_allow([^RAW_CXX_FOR_TARGET$])
+m4trace:configure.in:2371: -1- m4_pattern_allow([^COMPILER_AS_FOR_TARGET$])
+m4trace:configure.in:2372: -1- m4_pattern_allow([^COMPILER_LD_FOR_TARGET$])
+m4trace:configure.in:2373: -1- m4_pattern_allow([^COMPILER_NM_FOR_TARGET$])
+m4trace:configure.in:2382: -1- m4_pattern_allow([^MAINTAINER_MODE_TRUE$])
+m4trace:configure.in:2383: -1- m4_pattern_allow([^MAINTAINER_MODE_FALSE$])
+m4trace:configure.in:2392: -1- m4_pattern_allow([^MAINT$])
+m4trace:configure.in:2430: -1- _m4_warn([obsolete], [The macro `AC_TRY_COMPILE' is obsolete.
+You should run autoupdate.], [../../lib/autoconf/general.m4:2615: AC_TRY_COMPILE is expanded from...
+configure.in:2430: the top level])
+m4trace:configure.in:2435: -1- m4_pattern_allow([^stage1_cflags$])
+m4trace:configure.in:2447: -1- m4_pattern_allow([^stage1_checking$])
+m4trace:configure.in:2461: -1- m4_pattern_allow([^stage2_werror_flag$])
+m4trace:configure.in:2479: -1- m4_pattern_allow([^datarootdir$])
+m4trace:configure.in:2480: -1- m4_pattern_allow([^docdir$])
+m4trace:configure.in:2481: -1- m4_pattern_allow([^htmldir$])
+m4trace:configure.in:2483: -1- _m4_warn([obsolete], [AC_OUTPUT should be used without arguments.
+You should run autoupdate.], [])
+m4trace:configure.in:2483: -1- m4_pattern_allow([^LIB@&t@OBJS$])
+m4trace:configure.in:2483: -1- m4_pattern_allow([^LTLIBOBJS$])

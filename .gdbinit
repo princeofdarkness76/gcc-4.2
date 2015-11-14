@@ -1,0 +1,10 @@
+dir .
+dir /Users/stevenjames/gcc-4.2/gcc
+dir /Users/stevenjames/gcc-4.2/gcc/ada
+dir /Users/stevenjames/gcc-4.2/gcc/cp
+dir /Users/stevenjames/gcc-4.2/gcc/fortran
+dir /Users/stevenjames/gcc-4.2/gcc/java
+dir /Users/stevenjames/gcc-4.2/gcc/objc
+dir /Users/stevenjames/gcc-4.2/gcc/objcp
+dir /Users/stevenjames/gcc-4.2/gcc/treelang
+source /Users/stevenjames/gcc-4.2/gcc/gdbinit.in
